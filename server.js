@@ -30,11 +30,20 @@ app.use(
     })
 );
 
+mongoose.set('strictQuery', false)
+mongoose.connect(`mongodb://localhost:27017/QronosUserDB`, (error) => {
+    if (error) {
+        console.log("Error", error);
+    } else {
+        console.log("Successfully Connected");
+    }
+});
+
+
 app.get("/", (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged In' : 'Logged Out')
 })
 
-mongoose.set('strictQuery', false)
 
 routes(app)
 

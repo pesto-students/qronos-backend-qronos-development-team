@@ -1,4 +1,5 @@
 const { default: mongoose } = require("mongoose");
+const { DatabaseModel } = require("./database.models");
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -9,10 +10,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    database: {
-        type: Array,
-        "default": []
-    }
+    database: [DatabaseModel]
 })
 
 module.exports = User = mongoose.model('User', UserSchema)
