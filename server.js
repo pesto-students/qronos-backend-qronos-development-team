@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config()
+const cors = require('cors')
 
 const port = process.env.PORT || 8080
 
@@ -14,6 +15,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const { auth, requiresAuth } = require('express-openid-connect');
+const { getUser } = require('./controller/user.controller');
+const { routes } = require('./routes/routes');
+const { default: mongoose } = require('mongoose')
 app.use(
     auth({
         authRequired: false,
@@ -29,6 +33,10 @@ app.use(
 app.get("/", (req, res) => {
     res.send(req.oidc.isAuthenticated() ? 'Logged In' : 'Logged Out')
 })
+
+mongoose.set('strictQuery', false)
+
+routes(app)
 
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user))
