@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const User = require('../models/user.models')
 
 const getUser = async (req, res) => {
@@ -12,10 +12,28 @@ const getUser = async (req, res) => {
         const database = {
             name: 'Hello'
         }
-        await User.findOneAndUpdate(
-            { email: '30varanshu@gmail.com' },
-            { $push: { database: database } },
-            { new: true }
+        // await User.findOneAndUpdate(
+        //     { email: '30varanshu@gmail.com' },
+        //     { $push: { database: database } },
+        //     { new: true }
+        // )
+
+        const product = {
+            title: 'Product 2',
+            description: 'This is Product 2',
+            thumbnailTitle: 'Product 2',
+            seoTitle: 'Product 2',
+            seoDescription: 'Product 2',
+        }
+
+        await User.updateOne(
+            {
+                email: '30varanshu@gmail.com',
+                'database._id': '640df52fc54a34c00c2b614d'
+            },
+            {
+                $push: { 'database.$.productTable': product }
+            }
         )
     } else {
         await createUser(req, res)
