@@ -1,11 +1,12 @@
 const { default: mongoose } = require("mongoose");
-const { Blog } = require("./table.models");
+const { Blog, Product } = require("./table.models");
 
 const DatabaseModel = mongoose.Schema({
     name: {
         type: String
     },
-    productTable: [Blog]
+    productTable: [Product],
+    blogTable: [Blog]
 })
 
 module.exports = {

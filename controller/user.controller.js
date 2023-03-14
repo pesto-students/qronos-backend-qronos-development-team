@@ -7,29 +7,18 @@ const getUser = async (req, res) => {
 
     let newCreatedValue;
 
-    if (value) {
-        // res.status(200).send(JSON.stringify(value))
-        // if (value.database.length < 0) {
-
-        // }
-        // const database = {
-        //     name: 'Hello'
-        // }
-    } else {
+    if (!value) {
         newCreatedValue = await createUser(req, res)
     }
-    res.status(200).send(JSON.stringify(value ? value : newCreatedValue))
+    res.status(200).send(JSON.stringify(value))
 }
 
 const createUser = async (req, res) => {
-    console.log(req.oidc.user);
     const user = req.oidc.user
     const userValues = await User.create({
         name: user.name,
         email: user.email,
-        // database: []
     })
-    console.log(userValues);
     return userValues
 }
 
@@ -38,11 +27,6 @@ module.exports = {
 }
 
 
-        // await User.findOneAndUpdate(
-        //     { email: '30varanshu@gmail.com' },
-        //     { $push: { database: database } },
-        //     { new: true }
-        // )
 
         // const product = {
         //     title: 'Product 2',

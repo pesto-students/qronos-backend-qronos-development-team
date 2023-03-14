@@ -40,8 +40,9 @@ mongoose.connect(`mongodb://localhost:27017/QronosUserDB`, (error) => {
 });
 
 
-app.get("/", (req, res) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged In' : 'Logged Out')
+app.get("/", async (req, res) => {
+    // console.log(await req.oidc.)
+    res.send(req.oidc.isAuthenticated() ? JSON.stringify(req.oidc.user) : 'Logged Out')
 })
 
 
