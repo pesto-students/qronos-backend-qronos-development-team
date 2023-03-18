@@ -63,9 +63,74 @@ const createBlogEntry = async (req, res) => {
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
+const updateProduct = async (req, res) => {
+    // const emailId = '30varanshu@gmail.com'
+    const databaseId = req.params.databaseId
+    const productId = req.params.entryId
+
+    const emailId = req.body.emailId
+    const newProductContent = req.body.product
+
+    // console.log("qweqee", emailId, newProductContent);
+
+    const productEntry = await User.updateOne(
+        {
+            email: emailId,
+            'database._id': databaseId,
+            'database.productTable._id': productId
+        },
+        {
+            $set: {
+                'database.$[databaseId].productTable.$[productId]': newProductContent
+            }
+        },
+        {
+            arrayFilters: [
+                { 'databaseId._id': databaseId },
+                { 'productId._id': productId }
+            ]
+        }
+    ).exec()
+
+    console.log("productEntry", productEntry);
+    res.status(200).send(JSON.stringify(productEntry))
+}
+
+const updateBlog = async (req, res) => {
+    // const emailId = '30varanshu@gmail.com'
+    const databaseId = req.params.databaseId
+    const blogId = req.params.entryId
+
+    const emailId = req.body.emailId
+    const newBlogContent = req.body.blog
+
+    const blogEntry = await User.updateOne(
+        {
+            email: emailId,
+            'database._id': databaseId,
+            'database.blogTable._id': blogId
+        },
+        {
+            $set: {
+                'database.$[databaseId].blogTable.$[blogTable]': newBlogContent
+            }
+        },
+        {
+            arrayFilters: [
+                { 'databaseId._id': databaseId },
+                { 'blogTable._id': blogId }
+            ]
+        }
+    ).exec()
+
+    console.log(blogEntry);
+    res.status(200).send(JSON.stringify(blogEntry))
+}
 
 module.exports = {
     createDatabase,
     createProductEntry,
-    createBlogEntry
+    createBlogEntry,
+    updateProduct,
+    updateBlog
 }
