@@ -45,7 +45,7 @@ const createBlogEntry = async (req, res) => {
 
     const emailId = req.body.emailId
     const blog = req.body.blog
-
+    console.log(blog);
     if (!emailId || !blog) {
         res.status(400).send('Please send the data in a proper structure')
     }
@@ -128,10 +128,44 @@ const updateBlog = async (req, res) => {
     res.status(200).send(JSON.stringify(blogEntry))
 }
 
+const getEntries = async (req, res) => {
+    const databaseId = req.params.databaseId
+    const emailId = req.body.emailId
+    const entries = await User.findOne(
+        {
+            email: emailId,
+            'database._id': databaseId
+        },
+        {
+            "database.$": 1
+        }
+    ).exec()
+    const { database } = entries
+
+    const entriesArray = []
+    database[0].productTable.map((product) => {
+        entriesArray.push({
+            type: 'productType',
+            ...product._doc
+        })
+    })
+
+    database[0].blogTable?.map((blog) => {
+        entriesArray.push({
+            type: 'blogType',
+            ...blog._doc
+        })
+    })
+
+    // console.log(entriesArray);
+    res.status(200).send(JSON.stringify(entriesArray))
+}
+
 module.exports = {
     createDatabase,
     createProductEntry,
     createBlogEntry,
     updateProduct,
-    updateBlog
+    updateBlog,
+    getEntries
 }

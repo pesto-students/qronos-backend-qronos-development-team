@@ -1,5 +1,5 @@
 const express = require('express');
-const { createDatabase, createProductEntry, createBlogEntry, updateProduct, updateBlog } = require('../controller/database.controller');
+const { createDatabase, createProductEntry, createBlogEntry, updateProduct, updateBlog, getEntries } = require('../controller/database.controller');
 const { getUser } = require('../controller/user.controller');
 const router = express.Router()
 
@@ -34,10 +34,12 @@ const routes = (app) => {
     router.patch('/product/:databaseId/:entryId', (req, res) => {
         checkAuthentication(req, res, updateProduct)
     })
-    
+
 
     // APIs to get entries
-    // router.get('/database/:databaseId',)
+    router.get('/database/:databaseId', (req, res) => {
+        checkAuthentication(req, res, getEntries)
+    })
     app.use(router)
 }
 
