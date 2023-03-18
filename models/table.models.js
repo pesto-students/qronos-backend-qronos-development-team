@@ -29,8 +29,16 @@ const Product = mongoose.Schema({
     },
     priceCountryCode: {
         type: String
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
+})
 
 
 const Blog = mongoose.Schema({
@@ -54,7 +62,15 @@ const Blog = mongoose.Schema({
         type: String,
         required: true
     },
-}, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    }
+})
 
 
 module.exports = {

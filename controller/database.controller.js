@@ -69,7 +69,8 @@ const updateProduct = async (req, res) => {
     const productId = req.params.entryId
 
     const emailId = req.body.emailId
-    const newProductContent = req.body.product
+    console.log("new Date()", new Date());
+    const newProductContent = { ...req.body.product, updatedAt: new Date() }
 
     // console.log("qweqee", emailId, newProductContent);
 
@@ -102,7 +103,7 @@ const updateBlog = async (req, res) => {
     const blogId = req.params.entryId
 
     const emailId = req.body.emailId
-    const newBlogContent = req.body.blog
+    const newBlogContent = { ...req.body.blog, updatedAt: new Date() }
 
     const blogEntry = await User.updateOne(
         {
