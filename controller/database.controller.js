@@ -16,22 +16,15 @@ const createDatabase = async (req, res) => {
 }
 
 const createProductEntry = async (req, res) => {
-    const emailId = req.params.emailId
+    // const emailId = req.params.emailId
     const databaseId = req.params.databaseId
 
-    console.log(emailId, databaseId);
+    const emailId = req.body.emailId
+    const product = req.body.product
 
-    const product = {
-        title: 'Product 2',
-        description: 'This is Product 2',
-        thumbnailTitle: 'Product 2',
-        seoTitle: 'Product 2',
-        seoDescription: 'Product 2',
-        price: '20',
-        sku: '123',
-        priceCountryCode: 'USD'
+    if (!emailId || !product) {
+        res.status(400).send('Please send the data in a proper structure')
     }
-
 
     const tableEntry = await User.updateOne(
         {
@@ -48,17 +41,14 @@ const createProductEntry = async (req, res) => {
 }
 
 const createBlogEntry = async (req, res) => {
-    const emailId = req.params.emailId
     const databaseId = req.params.databaseId
 
-    const blog = {
-        title: 'Blog 2',
-        description: 'This is Blog 2',
-        thumbnailTitle: 'Blog 2',
-        seoTitle: 'Blog 2',
-        seoDescription: 'Blog 2',
-    }
+    const emailId = req.body.emailId
+    const blog = req.body.blog
 
+    if (!emailId || !blog) {
+        res.status(400).send('Please send the data in a proper structure')
+    }
 
     const tableEntry = await User.updateOne(
         {
@@ -70,7 +60,6 @@ const createBlogEntry = async (req, res) => {
         }
     )
 
-    console.log("blog", tableEntry);
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
