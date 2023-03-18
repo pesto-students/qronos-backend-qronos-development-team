@@ -74,9 +74,66 @@ const createBlogEntry = async (req, res) => {
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
+const updateProduct = async (req, res) => {
+    const emailId = '30varanshu@gmail.com'
+    const databaseId = req.params.databaseId
+    const productId = req.params.entryId
+    const newProductContent = {}
+    const productEntry = User.updateOne(
+        {
+            email: emailId,
+            'database._id': databaseId,
+            'database.productTable._id': productId
+        },
+        {
+            $set: {
+                'database.$[databaseId].productTable.$[productId]': newProductContent
+            }
+        },
+        {
+            arrayFilters: [
+                { 'databaseId._id': databaseId },
+                { 'productTable._id': productId }
+            ]
+        }
+    ).exec()
+
+    console.log(productEntry);
+    res.status(200).send(JSON.stringify(productEntry))
+}
+
+const updateBlog = async (req, res) => {
+    const emailId = '30varanshu@gmail.com'
+    const databaseId = req.params.databaseId
+    const blogId = req.params.entryId
+    const newBlogContent = {}
+    const blogEntry = User.updateOne(
+        {
+            email: emailId,
+            'database._id': databaseId,
+            'database.productTable._id': productId
+        },
+        {
+            $set: {
+                'database.$[databaseId].productTable.$[productId]': newBlogContent
+            }
+        },
+        {
+            arrayFilters: [
+                { 'databaseId._id': databaseId },
+                { 'productTable._id': blogId }
+            ]
+        }
+    ).exec()
+
+    console.log(blogEntry);
+    res.status(200).send(JSON.stringify(blogEntry))
+}
 
 module.exports = {
     createDatabase,
     createProductEntry,
-    createBlogEntry
+    createBlogEntry,
+    updateProduct,
+    updateBlog
 }
