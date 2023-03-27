@@ -1,5 +1,14 @@
 const express = require('express');
-const { createDatabase, createProductEntry, createBlogEntry, updateProduct, updateBlog, getEntries } = require('../controller/database.controller');
+const { 
+    createDatabase, 
+    createProductEntry, 
+    createBlogEntry, 
+    updateProduct, 
+    updateBlog, 
+    getEntries,
+    deleteProduct,
+    deleteBlog
+} = require('../controller/database.controller');
 const { getUser } = require('../controller/user.controller');
 const router = express.Router()
 
@@ -35,6 +44,13 @@ const routes = (app) => {
         checkAuthentication(req, res, updateProduct)
     })
 
+    //Delete Entry
+    router.delete(`/product/:entryId`, (req, res) => {
+        checkAuthentication(req, res, deleteProduct)
+    })
+    router.delete(`/blog/:entryId`, (req, res) => {
+        checkAuthentication(req, res, deleteBlog)
+    })
 
     // APIs to get entries
     router.get('/database/:databaseId', (req, res) => {

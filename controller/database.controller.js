@@ -26,7 +26,7 @@ const createProductEntry = async (req, res) => {
     }
 
     const tableEntry = await User.updateOne(
-    {
+        {
             email: emailId,
             'database._id': databaseId
         },
@@ -160,11 +160,37 @@ const getEntries = async (req, res) => {
     res.status(200).send(JSON.stringify(entriesArray))
 }
 
+const deleteProduct = async (req, res) => {
+    // console.log(req);
+    const email = req.body.email
+    const entryId = req.params.entryId
+    const databaseId = req.body.database
+    const deleteEntry = await User.updateOne(
+        { email: email, 'database._id': databaseId },
+        { $pull: { 'database.$.productTable': { _id: entryId } } }
+    ).exec();
+    res.status(200).send(JSON.stringify(deleteEntry))
+}
+
+const deleteBlog = async (req, res) => {
+    // console.log(req);
+    const email = req.body.email
+    const entryId = req.params.entryId
+    const databaseId = req.body.database
+    const deleteEntry = await User.updateOne(
+        { email: email, 'database._id': databaseId },
+        { $pull: { 'database.$.blogTable': { _id: entryId } } }
+    ).exec();
+    res.status(200).send(JSON.stringify(deleteEntry))
+}
+
 module.exports = {
     createDatabase,
     createProductEntry,
     createBlogEntry,
     updateProduct,
     updateBlog,
-    getEntries
+    getEntries,
+    deleteProduct,
+    deleteBlog
 }
