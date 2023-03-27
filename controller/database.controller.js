@@ -1,13 +1,12 @@
 const User = require('../models/user.models')
 
 const createDatabase = async (req, res) => {
-
+    const emailId = req.body.emailId
     const database = {
         name: req.params.name
     }
-
     const databaseEntry = await User.findOneAndUpdate(
-        { email: '30varanshu@gmail.com' },
+        { email: emailId },
         { $push: { database: database } },
         { new: true }
     )
@@ -27,7 +26,7 @@ const createProductEntry = async (req, res) => {
     }
 
     const tableEntry = await User.updateOne(
-        {
+    {
             email: emailId,
             'database._id': databaseId
         },
@@ -130,7 +129,7 @@ const updateBlog = async (req, res) => {
 
 const getEntries = async (req, res) => {
     const databaseId = req.params.databaseId
-    const emailId = req.body.emailId
+    const emailId = req.query.emailId
     const entries = await User.findOne(
         {
             email: emailId,

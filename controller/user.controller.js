@@ -2,22 +2,21 @@
 const User = require('../models/user.models')
 
 const getUser = async (req, res) => {
-    const value = await User.findOne({ email: '30varanshu@gmail.com' })
-    console.log("allValues", value);
-
+    const emailId = req.query.emailId
+    const value = await User.findOne({ email: emailId })
     let newCreatedValue;
-
+    
     if (!value) {
-        newCreatedValue = await createUser(req, res)
+        newCreatedValue = await createUser(req, res, req.query)
     }
-    res.status(200).send(JSON.stringify(value))
+    res.status(200).send(JSON.stringify(value ? value : newCreatedValue))
 }
 
-const createUser = async (req, res) => {
-    const user = req.oidc.user
+const createUser = async (req, res, body) => {
+    // const user = req.oidc.user
     const userValues = await User.create({
-        name: user.name,
-        email: user.email,
+        name: body.name,
+        email: body.emailId,
     })
     return userValues
 }
