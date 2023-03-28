@@ -1,13 +1,16 @@
 const express = require('express');
-const { 
-    createDatabase, 
-    createProductEntry, 
-    createBlogEntry, 
-    updateProduct, 
-    updateBlog, 
+const {
+    createDatabase,
+    createProductEntry,
+    createBlogEntry,
+    updateProduct,
+    updateBlog,
     getEntries,
     deleteProduct,
-    deleteBlog
+    deleteBlog,
+    getProductEntry,
+    getBlogEntry
+    // getSingleEntry
 } = require('../controller/database.controller');
 const { getUser } = require('../controller/user.controller');
 const router = express.Router()
@@ -37,6 +40,8 @@ const routes = (app) => {
     router.post('/blog/:databaseId', (req, res) => {
         checkAuthentication(req, res, createBlogEntry)
     })
+
+    //Edit Entries
     router.patch('/blog/:databaseId/:entryId', (req, res) => {
         checkAuthentication(req, res, updateBlog)
     })
@@ -56,6 +61,18 @@ const routes = (app) => {
     router.get('/database/:databaseId', (req, res) => {
         checkAuthentication(req, res, getEntries)
     })
+    // router.get('/database', (req, res) => {
+    //     checkAuthentication(req, res, getSingleEntry)
+    // })
+
+    //GET Specific Entry
+    router.get(`/product/:entryId`, (req, res) => {
+        checkAuthentication(req, res, getProductEntry)
+    })
+    router.get(`/blog/:entryId`, (req, res) => {
+        checkAuthentication(req, res, getBlogEntry)
+    })
+
     app.use(router)
 }
 

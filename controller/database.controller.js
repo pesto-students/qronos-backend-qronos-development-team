@@ -184,6 +184,63 @@ const deleteBlog = async (req, res) => {
     res.status(200).send(JSON.stringify(deleteEntry))
 }
 
+const getProductEntry = async (req, res) => {
+    const entryId = req.params.entryId
+    const databaseId = req.query.databaseId
+    const emailId = req.query.email
+    console.log(req.query);
+
+    console.log(entryId);
+    console.log(databaseId);
+    console.log(emailId);
+
+    try {
+        await User.findOne({ email: emailId }).exec((err, userTable) => {
+            if (err) throw err
+            const database = userTable.database.id(databaseId)
+            const entry = database.productTable.id(entryId)
+            console.log("entry", entry);
+            if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
+            else res.status(200).send(JSON.stringify(entry))
+        })
+        // console.log("result", result)
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(JSON.stringify(error))
+    }
+
+}
+
+const getBlogEntry = async (req, res) => {
+    const entryId = req.params.entryId
+    const databaseId = req.query.databaseId
+    const emailId = req.query.email
+
+    console.log(req.query);
+
+    console.log(entryId);
+    console.log(databaseId);
+    console.log(emailId);
+
+    try {
+        await User.findOne({ email: emailId }).exec((err, userTable) => {
+            if (err) throw err
+            const database = userTable.database.id(databaseId)
+            const entry = database.blogTable.id(entryId)
+            console.log("entry", entry);
+            if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
+            else res.status(200).send(JSON.stringify(entry))
+        })
+        // console.log("result", result)
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(JSON.stringify(error))
+    }
+}
+// const getSingleEntry = async (req, res) => { 
+
+// }
+
 module.exports = {
     createDatabase,
     createProductEntry,
@@ -192,5 +249,8 @@ module.exports = {
     updateBlog,
     getEntries,
     deleteProduct,
-    deleteBlog
+    deleteBlog,
+    getProductEntry,
+    getBlogEntry
+    // getSingleEntry
 }
