@@ -11,15 +11,12 @@ const Product = mongoose.Schema({
     },
     thumbnailTitle: {
         type: String,
-        required: true
     },
     seoTitle: {
         type: String,
-        required: true
     },
     seoDescription: {
         type: String,
-        required: true
     },
     price: {
         type: Number
@@ -48,19 +45,15 @@ const Blog = mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
     },
     thumbnailTitle: {
         type: String,
-        required: true
     },
     seoTitle: {
         type: String,
-        required: true
     },
     seoDescription: {
         type: String,
-        required: true
     },
     createdAt: {
         type: Date,
