@@ -9,7 +9,8 @@ const {
     deleteProduct,
     deleteBlog,
     getProductEntry,
-    getBlogEntry
+    getBlogEntry,
+    deleteEntries
     // getSingleEntry
 } = require('../controller/database.controller');
 const { getUser } = require('../controller/user.controller');
@@ -50,6 +51,9 @@ const routes = (app) => {
     })
 
     //Delete Entry
+    router.delete(`/database/:databaseId`, (req, res) => {
+        checkAuthentication(req, res, deleteEntries)
+    })
     router.delete(`/product/:entryId`, (req, res) => {
         checkAuthentication(req, res, deleteProduct)
     })

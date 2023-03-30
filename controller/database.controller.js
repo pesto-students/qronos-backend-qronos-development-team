@@ -140,7 +140,7 @@ const getEntries = async (req, res) => {
         }
     ).exec()
     const { database } = entries
-
+    console.log(database);
     const entriesArray = []
     database[0].productTable.map((product) => {
         entriesArray.push({
@@ -158,6 +158,29 @@ const getEntries = async (req, res) => {
 
     // console.log(entriesArray);
     res.status(200).send(JSON.stringify(entriesArray))
+}
+
+const deleteEntries = async (req, res) => {
+    const databaseId = req.params.databaseId
+    const productIds = req.body.productIds
+    const blogIds = req.body.blogIds
+    const email = req.body.email
+    console.log(blogIds);
+    console.log(productIds);
+    if (productIds.length > 0)
+        await User.updateOne(
+            { email: email, "database._id": databaseId },
+            { "$pull": { "database.$[database].productTable": { "_id": { "$in": productIds } } } },
+            { "arrayFilters": [{ "database._id": databaseId }] }
+        ).exec()
+    if (blogIds.length > 0)
+        await User.updateOne(
+            { email: email, "database._id": databaseId },
+            { "$pull": { "database.$[database].blogTable": { "_id": { "$in": blogIds } } } },
+            { "arrayFilters": [{ "database._id": databaseId }] }
+        ).exec()
+
+    res.status(200).send('Successfull')
 }
 
 const deleteProduct = async (req, res) => {
@@ -251,6 +274,7 @@ module.exports = {
     deleteProduct,
     deleteBlog,
     getProductEntry,
-    getBlogEntry
+    getBlogEntry,
+    deleteEntries
     // getSingleEntry
 }
