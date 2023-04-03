@@ -12,7 +12,7 @@ const port = process.env.PORT || 8080
 
 
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: process.env.BASE_URL
 };
 
 app.use(cors(corsOptions));
