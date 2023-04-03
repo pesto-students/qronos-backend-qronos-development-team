@@ -36,7 +36,7 @@ app.use(
 );
 
 mongoose.set('strictQuery', false)
-mongoose.connect(`mongodb://localhost:27017/QronosUserDB`, (error) => {
+mongoose.connect(process.env.MONGODB_URI, (error) => {
     if (error) {
         console.log("Error", error);
     } else {
