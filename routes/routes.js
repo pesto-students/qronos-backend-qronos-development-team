@@ -1,4 +1,7 @@
 const express = require('express');
+const cors = require('cors')
+const router = express.Router()
+
 const {
     createDatabase,
     createProductEntry,
@@ -14,7 +17,6 @@ const {
     // getSingleEntry
 } = require('../controller/database.controller');
 const { getUser } = require('../controller/user.controller');
-const router = express.Router()
 
 const checkAuthentication = (req, res, func) => {
     // if (req.oidc.isAuthenticated()) {
@@ -24,45 +26,57 @@ const checkAuthentication = (req, res, func) => {
     // }
 }
 
+const allowedOrigins = ["http://localhost:3000"]
+
+function allowOnlySpecificOrigins(req, res, next) {
+    const origin = req.headers.origin;
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        next();
+    } else {
+        res.status(403).json({ message: 'Forbidden' });
+    }
+}
+
 const routes = (app) => {
-    router.get('/get-user', (req, res) => {
+    router.get('/get-user', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, getUser)
     })
 
     // APIs to edit entries
-    router.post('/database/:name', (req, res) => {
+    router.post('/database/:name', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, createDatabase)
     })
     //To create a new product entry
-    router.post('/product/:databaseId', (req, res) => {
+    router.post('/product/:databaseId', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, createProductEntry)
     })
     //To create a new blog entry
-    router.post('/blog/:databaseId', (req, res) => {
+    router.post('/blog/:databaseId', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, createBlogEntry)
     })
 
     //Edit Entries
-    router.patch('/blog/:databaseId/:entryId', (req, res) => {
+    router.patch('/blog/:databaseId/:entryId', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, updateBlog)
     })
-    router.patch('/product/:databaseId/:entryId', (req, res) => {
+    router.patch('/product/:databaseId/:entryId', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, updateProduct)
     })
 
     //Delete Entry
-    router.delete(`/database/:databaseId`, (req, res) => {
+    router.delete(`/database/:databaseId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, deleteEntries)
     })
-    router.delete(`/product/:entryId`, (req, res) => {
+    router.delete(`/product/:entryId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, deleteProduct)
     })
-    router.delete(`/blog/:entryId`, (req, res) => {
+    router.delete(`/blog/:entryId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, deleteBlog)
     })
 
     // APIs to get entries
-    router.get('/database/:databaseId', (req, res) => {
+    router.get('/database/:databaseId', allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, getEntries)
     })
     // router.get('/database', (req, res) => {
@@ -70,11 +84,14 @@ const routes = (app) => {
     // })
 
     //GET Specific Entry
-    router.get(`/product/:entryId`, (req, res) => {
+    router.get(`/product/:entryId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, getProductEntry)
     })
-    router.get(`/blog/:entryId`, (req, res) => {
+    router.get(`/blog/:entryId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, getBlogEntry)
+    })
+    router.get('/testing', (req, res) => {
+        console.log("qweqeqw");
     })
 
     app.use(router)

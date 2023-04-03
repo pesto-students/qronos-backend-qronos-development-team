@@ -1,9 +1,12 @@
-const User = require('../models/user.models')
+const User = require('../models/user.models');
+const { generateJwtToken } = require('../utils/helpers');
 
 const createDatabase = async (req, res) => {
+    console.log("hello");
     const emailId = req.body.emailId
     const database = {
-        name: req.params.name
+        name: req.params.name,
+        jwt: [generateJwtToken()]
     }
     const databaseEntry = await User.findOneAndUpdate(
         { email: emailId },

@@ -5,6 +5,7 @@ const DatabaseModel = mongoose.Schema({
     name: {
         type: String
     },
+    jwt: [String],
     productTable: [Product],
     blogTable: [Blog]
 })

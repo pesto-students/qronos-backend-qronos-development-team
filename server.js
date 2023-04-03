@@ -11,7 +11,7 @@ const corsOptions = {
     origin: "http://localhost:3000"
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -22,7 +22,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 const { auth, requiresAuth } = require('express-openid-connect');
 const { getUser } = require('./controller/user.controller');
 const { routes } = require('./routes/routes');
-const { default: mongoose } = require('mongoose')
+const { default: mongoose } = require('mongoose');
+const { routesAPI } = require('./routes/api.routes');
 app.use(
     auth({
         authRequired: false,
@@ -52,6 +53,7 @@ app.get("/", async (req, res) => {
 
 
 routes(app)
+routesAPI(app)
 
 app.get('/profile', requiresAuth(), (req, res) => {
     res.send(JSON.stringify(req.oidc.user))
