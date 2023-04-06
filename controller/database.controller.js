@@ -14,7 +14,6 @@ const createDatabase = async (req, res) => {
         { new: true }
     )
 
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(databaseEntry))
 }
 
@@ -40,7 +39,6 @@ const createProductEntry = async (req, res) => {
     )
 
     console.log("product", tableEntry);
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
@@ -64,7 +62,6 @@ const createBlogEntry = async (req, res) => {
         }
     )
 
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
@@ -99,7 +96,6 @@ const updateProduct = async (req, res) => {
     ).exec()
 
     console.log("productEntry", productEntry);
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(productEntry))
 }
 
@@ -131,7 +127,6 @@ const updateBlog = async (req, res) => {
     ).exec()
 
     console.log(blogEntry);
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(blogEntry))
 }
 
@@ -165,7 +160,6 @@ const getEntries = async (req, res) => {
     })
 
     // console.log(entriesArray);
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(entriesArray))
 }
 
@@ -189,7 +183,6 @@ const deleteEntries = async (req, res) => {
             { "arrayFilters": [{ "database._id": databaseId }] }
         ).exec()
 
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send('Successfull')
 }
 
@@ -202,7 +195,6 @@ const deleteProduct = async (req, res) => {
         { email: email, 'database._id': databaseId },
         { $pull: { 'database.$.productTable': { _id: entryId } } }
     ).exec();
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(deleteEntry))
 }
 
@@ -215,7 +207,6 @@ const deleteBlog = async (req, res) => {
         { email: email, 'database._id': databaseId },
         { $pull: { 'database.$.blogTable': { _id: entryId } } }
     ).exec();
-    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(deleteEntry))
 }
 
@@ -265,8 +256,7 @@ const getBlogEntry = async (req, res) => {
             console.log("entry", entry);
             if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
             else {
-                res.set('Access-Control-Allow-Origin', '*')
-                res.status(200).send(JSON.stringify(entry))
+                            res.status(200).send(JSON.stringify(entry))
             }
         })
         // console.log("result", result)
