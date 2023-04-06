@@ -5,10 +5,11 @@ const getUser = async (req, res) => {
     const emailId = req.query.emailId
     const value = await User.findOne({ email: emailId })
     let newCreatedValue;
-    
+
     if (!value) {
         newCreatedValue = await createUser(req, res, req.query)
     }
+    res.set('Access-Control-Allow-Origin', '*')
     res.status(200).send(JSON.stringify(value ? value : newCreatedValue))
 }
 

@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
-require('dotenv').config()
+// require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 const cors = require('cors')
 const bodyParser = require('body-parser');
 
@@ -8,7 +12,7 @@ const port = process.env.PORT || 8080
 
 
 const corsOptions = {
-    origin: "http://localhost:3000"
+    origin: process.env.BASE_URL
 };
 
 app.use(cors());
@@ -37,7 +41,7 @@ app.use(
 );
 
 mongoose.set('strictQuery', false)
-mongoose.connect(`mongodb://localhost:27017/QronosUserDB`, (error) => {
+mongoose.connect(process.env.MONGODB_URI, (error) => {
     if (error) {
         console.log("Error", error);
     } else {
