@@ -22,13 +22,13 @@ const verifyToken = async (req, res, next) => {
 
     try {
         if (jwt_token && database_id) {
-            console.log(jwt_token, database_id);
+            // console.log(jwt_token, database_id);
             const validation = await validateTokens(jwt_token, database_id)
             if (validation) {
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 return next();
             } else {
-                console.log("adsadas");
+                // console.log("adsadas");
                 return res.status(401).json({ error: 'The database does not exist' });
             }
         } else if (!jwt_token) {

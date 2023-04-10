@@ -11,7 +11,7 @@ const generateJwtToken = (jwtToken) => {
     const databaseIdentifier = generateUniqueIdentifier();
     const JWT_SECRET_KEY = "95f3796f1ed430edcb49916f111bed"
     const databaseJwt = jwt.sign({ jwt: jwtToken }, process.env.JWT_SECRET_KEY)
-    console.log(databaseJwt);
+    // console.log(databaseJwt);
     // console.log(name);
     return databaseJwt
 }
@@ -47,7 +47,7 @@ const encodeAccessToken = (userDatabase) => {
 }
 
 const validateTokens = async (jwt, id) => {
-    console.log(id, jwt);
+    // console.log(id, jwt);
     try {
         const table = await User.findOne({
             database: {
@@ -70,8 +70,7 @@ const getKeys = (req) => {
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     const jwt_token = decoded.jwt
-    console.log(database_id,
-        jwt_token);
+    // console.log(database_id,jwt_token);
     return {
         database_id,
         jwt_token

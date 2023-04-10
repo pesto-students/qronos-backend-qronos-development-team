@@ -50,18 +50,18 @@ mongoose.connect(process.env.MONGODB_URI, (error) => {
 });
 
 
-app.get("/", async (req, res) => {
-    // console.log(await req.oidc.)
-    res.send(req.oidc.isAuthenticated() ? JSON.stringify(req.oidc.user) : 'Logged Out')
-})
+// app.get("/", async (req, res) => {
+//     // console.log(await req.oidc.)
+//     res.send(req.oidc.isAuthenticated() ? JSON.stringify(req.oidc.user) : 'Logged Out')
+// })
 
 
 routes(app)
 routesAPI(app)
 
-app.get('/profile', requiresAuth(), (req, res) => {
-    res.send(JSON.stringify(req.oidc.user))
-})
+// app.get('/profile', requiresAuth(), (req, res) => {
+//     res.send(JSON.stringify(req.oidc.user))
+// })
 
 app.listen(port, () => {
     console.log(`Server is running at PORT ${port}`);

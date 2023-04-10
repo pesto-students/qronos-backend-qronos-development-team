@@ -93,9 +93,9 @@ const routes = (app) => {
     router.get(`/blog/:entryId`, allowOnlySpecificOrigins, (req, res) => {
         checkAuthentication(req, res, getBlogEntry)
     })
-    router.get('/testing', (req, res) => {
-        console.log("qweqeqw");
-    })
+    // router.get('/testing', (req, res) => {
+    //     console.log("qweqeqw");
+    // })
 
     app.use(router)
 }

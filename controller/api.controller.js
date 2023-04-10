@@ -37,10 +37,10 @@ const getAllEntries = async (req, res) => {
             })
         })
 
-        console.log("table", entriesArray);
+        // console.log("table", entriesArray);
         res.status(200).send(entriesArray)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send(error)
     }
 }
@@ -74,7 +74,7 @@ const getProductEntries = async (req, res) => {
         })
         res.status(200).send(entriesArray)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send(error)
     }
 }
@@ -110,7 +110,7 @@ const getBlogEntries = async (req, res) => {
 
         res.status(200).send(entriesArray)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send(error)
     }
 }

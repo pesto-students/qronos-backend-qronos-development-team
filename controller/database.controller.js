@@ -2,7 +2,7 @@ const User = require('../models/user.models');
 const { generateJwtToken, generateUniqueIdentifier, encodeAccessToken } = require('../utils/helpers');
 
 const createDatabase = async (req, res) => {
-    console.log("hello");
+    // console.log("hello");
     const emailId = req.body.emailId
     const database = {
         name: req.params.name,
@@ -39,7 +39,7 @@ const createProductEntry = async (req, res) => {
         }
     )
 
-    console.log("product", tableEntry);
+    // console.log("product", tableEntry);
     res.status(200).send(JSON.stringify(tableEntry))
 }
 
@@ -48,7 +48,7 @@ const createBlogEntry = async (req, res) => {
 
     const emailId = req.body.emailId
     const blog = req.body.blog
-    console.log(blog);
+    // console.log(blog);
     if (!emailId || !blog) {
         res.status(400).send('Please send the data in a proper structure')
     }
@@ -72,7 +72,7 @@ const updateProduct = async (req, res) => {
     const productId = req.params.entryId
 
     const emailId = req.body.emailId
-    console.log("new Date()", new Date());
+    // console.log("new Date()", new Date());
     const newProductContent = { ...req.body.product, updatedAt: new Date() }
 
     // console.log("qweqee", emailId, newProductContent);
@@ -96,7 +96,7 @@ const updateProduct = async (req, res) => {
         }
     ).exec()
 
-    console.log("productEntry", productEntry);
+    // console.log("productEntry", productEntry);
     res.status(200).send(JSON.stringify(productEntry))
 }
 
@@ -127,7 +127,7 @@ const updateBlog = async (req, res) => {
         }
     ).exec()
 
-    console.log(blogEntry);
+    // console.log(blogEntry);
     res.status(200).send(JSON.stringify(blogEntry))
 }
 
@@ -144,7 +144,7 @@ const getEntries = async (req, res) => {
         }
     ).exec()
     const { database } = entries
-    console.log(database);
+    // console.log(database);
     const entriesArray = []
     database[0].productTable.map((product) => {
         entriesArray.push({
@@ -160,7 +160,7 @@ const getEntries = async (req, res) => {
         })
     })
 
-    console.log("entriesArray",entriesArray);
+    // console.log("entriesArray",entriesArray);
     res.status(200).send(JSON.stringify(entriesArray))
 }
 
@@ -169,8 +169,8 @@ const deleteEntries = async (req, res) => {
     const productIds = req.body.productIds
     const blogIds = req.body.blogIds
     const email = req.body.email
-    console.log(blogIds);
-    console.log(productIds);
+    // console.log(blogIds);
+    // console.log(productIds);
     if (productIds.length > 0)
         await User.updateOne(
             { email: email, "database._id": databaseId },
@@ -215,24 +215,24 @@ const getProductEntry = async (req, res) => {
     const entryId = req.params.entryId
     const databaseId = req.query.databaseId
     const emailId = req.query.email
-    console.log(req.query);
+    // console.log(req.query);
 
-    console.log(entryId);
-    console.log(databaseId);
-    console.log(emailId);
+    // console.log(entryId);
+    // console.log(databaseId);
+    // console.log(emailId);
 
     try {
         await User.findOne({ email: emailId }).exec((err, userTable) => {
             if (err) throw err
             const database = userTable.database.id(databaseId)
             const entry = database.productTable.id(entryId)
-            console.log("entry", entry);
+            // console.log("entry", entry);
             if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
             else res.status(200).send(JSON.stringify(entry))
         })
         // console.log("result", result)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send(JSON.stringify(error))
     }
 
@@ -243,18 +243,18 @@ const getBlogEntry = async (req, res) => {
     const databaseId = req.query.databaseId
     const emailId = req.query.email
 
-    console.log(req.query);
+    // console.log(req.query);
 
-    console.log(entryId);
-    console.log(databaseId);
-    console.log(emailId);
+    // console.log(entryId);
+    // console.log(databaseId);
+    // console.log(emailId);
 
     try {
         await User.findOne({ email: emailId }).exec((err, userTable) => {
             if (err) throw err
             const database = userTable.database.id(databaseId)
             const entry = database.blogTable.id(entryId)
-            console.log("entry", entry);
+            // console.log("entry", entry);
             if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
             else {
                 res.status(200).send(JSON.stringify(entry))
@@ -262,7 +262,7 @@ const getBlogEntry = async (req, res) => {
         })
         // console.log("result", result)
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).send(JSON.stringify(error))
     }
 }
