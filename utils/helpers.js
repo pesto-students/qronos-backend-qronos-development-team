@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.models');
 
 const generateUniqueIdentifier = () => {
     const subdocumentIdentifier = Math.floor(Math.random() * (99999 - 10000 + 1) + 10000);
@@ -45,9 +46,27 @@ const encodeAccessToken = (userDatabase) => {
     return reStructureValue
 }
 
+const validateTokens = async (jwt, id) => {
+    console.log(id, jwt);
+    try {
+        const table = await User.findOne({
+            database: {
+                $elemMatch: {
+                    _id: id,
+                    jwt: jwt
+                }
+            }
+        })
+        return true
+    } catch (error) {
+        return false
+    }
+}
+
 
 module.exports = {
     generateUniqueIdentifier,
     generateJwtToken,
-    encodeAccessToken
+    encodeAccessToken,
+    validateTokens
 }

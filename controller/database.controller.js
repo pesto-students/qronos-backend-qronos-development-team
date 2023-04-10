@@ -160,7 +160,7 @@ const getEntries = async (req, res) => {
         })
     })
 
-    // console.log(entriesArray);
+    console.log("entriesArray",entriesArray);
     res.status(200).send(JSON.stringify(entriesArray))
 }
 
