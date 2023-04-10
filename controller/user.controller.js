@@ -1,15 +1,19 @@
 // const mongoose = require('mongoose');
-const User = require('../models/user.models')
+const User = require('../models/user.models');
+const { encodeAccessToken } = require('../utils/helpers');
 
 const getUser = async (req, res) => {
     const emailId = req.query.emailId
-    const value = await User.findOne({ email: emailId })
-    let newCreatedValue;
+    let value = await User.findOne({ email: emailId })
+    // let newCreatedValue;
 
     if (!value) {
-        newCreatedValue = await createUser(req, res, req.query)
+        value = await createUser(req, res, req.query)
     }
-    res.status(200).send(JSON.stringify(value ? value : newCreatedValue))
+
+    const encodedValue = encodeAccessToken(value)
+
+    res.status(200).send(JSON.stringify(encodedValue))
 }
 
 const createUser = async (req, res, body) => {

@@ -1,12 +1,12 @@
 const User = require('../models/user.models');
-const { generateJwtToken } = require('../utils/helpers');
+const { generateJwtToken, generateUniqueIdentifier, encodeAccessToken } = require('../utils/helpers');
 
 const createDatabase = async (req, res) => {
     console.log("hello");
     const emailId = req.body.emailId
     const database = {
         name: req.params.name,
-        jwt: [generateJwtToken()]
+        jwt: generateUniqueIdentifier()
     }
     const databaseEntry = await User.findOneAndUpdate(
         { email: emailId },
@@ -14,7 +14,8 @@ const createDatabase = async (req, res) => {
         { new: true }
     )
 
-    res.status(200).send(JSON.stringify(databaseEntry))
+    const encodedDatabase = encodeAccessToken(databaseEntry)
+    res.status(200).send(JSON.stringify(encodedDatabase))
 }
 
 const createProductEntry = async (req, res) => {
@@ -256,7 +257,7 @@ const getBlogEntry = async (req, res) => {
             console.log("entry", entry);
             if (!entry) res.status(400).send(JSON.stringify({ message: 'Entry not found' }))
             else {
-                            res.status(200).send(JSON.stringify(entry))
+                res.status(200).send(JSON.stringify(entry))
             }
         })
         // console.log("result", result)
