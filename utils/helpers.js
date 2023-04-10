@@ -63,10 +63,26 @@ const validateTokens = async (jwt, id) => {
     }
 }
 
+const getKeys = (req) => {
+
+    const authHeader = req.headers.authorization;
+    const database_id = req.query.database_id
+    const token = authHeader.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const jwt_token = decoded.jwt
+    console.log(database_id,
+        jwt_token);
+    return {
+        database_id,
+        jwt_token
+    }
+}
+
 
 module.exports = {
     generateUniqueIdentifier,
     generateJwtToken,
     encodeAccessToken,
-    validateTokens
+    validateTokens,
+    getKeys
 }

@@ -1,14 +1,14 @@
 const User = require('../models/user.models');
 const jwt = require('jsonwebtoken');
+const { getKeys } = require('../utils/helpers');
 
 const getAllEntries = async (req, res) => {
 
-    const authHeader = req.headers.authorization;
-    const database_id = req.query.database_id
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const jwt_token = decoded.jwt
-    console.log(database_id, jwt_token);
+    const {
+        database_id,
+        jwt_token
+    } = getKeys(req)
+
     try {
         const table = await User.findOne({
             database: {
@@ -22,7 +22,6 @@ const getAllEntries = async (req, res) => {
         })
 
         const { database } = table
-        console.log(database);
         const entriesArray = []
         database[0].productTable.map((product) => {
             entriesArray.push({
@@ -42,9 +41,82 @@ const getAllEntries = async (req, res) => {
         res.status(200).send(entriesArray)
     } catch (error) {
         console.log(error);
+        res.status(400).send(error)
+    }
+}
+
+const getProductEntries = async (req, res) => {
+
+    const {
+        database_id,
+        jwt_token
+    } = getKeys(req)
+
+    try {
+        const table = await User.findOne({
+            database: {
+                $elemMatch: {
+                    _id: database_id,
+                    jwt: jwt_token
+                }
+            }
+        }, {
+            "database.$": 1
+        })
+
+        const { database } = table
+        const entriesArray = []
+        database[0].productTable.map((product) => {
+            entriesArray.push({
+                type: 'productType',
+                ...product._doc
+            })
+        })
+        res.status(200).send(entriesArray)
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error)
+    }
+}
+
+
+const getBlogEntries = async (req, res) => {
+
+    const {
+        database_id,
+        jwt_token
+    } = getKeys(req)
+
+    try {
+        const table = await User.findOne({
+            database: {
+                $elemMatch: {
+                    _id: database_id,
+                    jwt: jwt_token
+                }
+            }
+        }, {
+            "database.$": 1
+        })
+
+        const { database } = table
+        const entriesArray = []
+        database[0].blogTable?.map((blog) => {
+            entriesArray.push({
+                type: 'blogType',
+                ...blog._doc
+            })
+        })
+
+        res.status(200).send(entriesArray)
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error)
     }
 }
 
 module.exports = {
-    getAllEntries
+    getAllEntries,
+    getBlogEntries,
+    getProductEntries
 }

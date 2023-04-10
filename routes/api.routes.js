@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllEntries } = require('../controller/api.controller');
+const { getAllEntries, getProductEntries, getBlogEntries } = require('../controller/api.controller');
 const router = express.Router()
 const jwt = require('jsonwebtoken');
 const { validateTokens } = require('../utils/helpers');
@@ -44,6 +44,8 @@ const verifyToken = async (req, res, next) => {
 
 const routesAPI = (app) => {
     router.get('/api/v1/all', verifyToken, getAllEntries)
+    router.get('/api/v1/product', verifyToken, getProductEntries)
+    router.get('/api/v1/blog', verifyToken, getBlogEntries)
 
     app.use(router)
 }
