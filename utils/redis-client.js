@@ -1,6 +1,16 @@
 const redis = require('redis');
 // (async () => {
-const client = redis.createClient();
+const client = process.env.PRODUCTION
+    ? redis.createClient({
+        socket: {
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT
+        },
+        username: process.env.REDIS_USERNAME,
+        password: process.env.REDIS_PWD
+    })
+    : redis.createClient();
+
 client.on('error', (error) => console.log(`redis error ${error}`))
 client.connect()
 // })
