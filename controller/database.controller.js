@@ -1,4 +1,5 @@
 const User = require('../models/user.models');
+const { redisClient } = require('../server');
 const { generateJwtToken, generateUniqueIdentifier, encodeAccessToken } = require('../utils/helpers');
 
 const createDatabase = async (req, res) => {
@@ -13,6 +14,8 @@ const createDatabase = async (req, res) => {
         { $push: { database: database } },
         { new: true }
     )
+
+    redisClient.set(emailId, JSON.stringify(databaseEntry), 'EX', 3600)
 
     const encodedDatabase = encodeAccessToken(databaseEntry)
     res.status(200).send(JSON.stringify(encodedDatabase))
