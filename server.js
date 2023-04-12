@@ -22,7 +22,7 @@ let client
 
 if (process.env.NODE_ENV === "production")
     client = redis.createClient({
-        url: 'rediss://red-cgrfa8rk9u56e3mh0te0:MpSGU3inJxvUMFPJ8bjHooBnCK98fH4C@singapore-redis.render.com:6379'
+        url: 'redis://red-cgrfa8rk9u56e3mh0te0:6379'
     })
 else
     client = redis.createClient();
