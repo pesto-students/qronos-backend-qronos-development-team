@@ -27,6 +27,9 @@ if (process.env.NODE_ENV === "production")
 else
     client = redis.createClient();
 
+client.on('error', (error) => console.log(`redis error ${error}`))
+client.connect()
+
 module.exports.redisClient = client;
 
 
