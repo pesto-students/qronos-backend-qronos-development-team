@@ -1,13 +1,11 @@
-// const mongoose = require('mongoose');
 const User = require('../models/user.models');
+const { redisClient } = require('../server');
 const { encodeAccessToken } = require('../utils/helpers');
-const { getRedisValue, setRedisValue } = require('../utils/redis-helpers');
 
 const getUser = async (req, res) => {
     const emailId = req.query.emailId
 
-    let value = await getRedisValue(emailId)
-
+    let value = await redisClient.get(emailId)
     if (!value) {
         value = await User.findOne({ email: emailId })
         // let newCreatedValue;
@@ -16,8 +14,10 @@ const getUser = async (req, res) => {
             value = await createUser(req, res, req.query)
         }
 
-        await setRedisValue(emailId, value)
+        redisClient.set(emailId, value, 'EX', 3600)
+        // await setRedisValue(emailId, value)
     } else {
+        value = JSON.parse(value)
         console.log("asdasdasasd", value);
     }
 

@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const redis = require('redis');
 // require('dotenv').config()
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
@@ -14,6 +15,13 @@ const port = process.env.PORT || 8080
 const corsOptions = {
     origin: process.env.BASE_URL
 };
+
+let client = redis.createClient();
+client.on('error', (error) => console.log(`redis error ${error}`))
+client.connect()
+
+module.exports.redisClient = client;
+
 
 app.use(cors());
 app.use(express.json())

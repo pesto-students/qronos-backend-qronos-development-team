@@ -1,8 +1,10 @@
 const redis = require('redis');
-const client = redis.createClient({
-    host: 'localhost',
-    port: '8080'
-});
+let client
+(async () => {
+    client = redis.createClient();
+    client.on('error', (error) => console.log(`redis error ${error}`))
+    await client.connect()
+})
 
 // client.on('connect', function () {
 //     console.log('Redis Client Connected!');
