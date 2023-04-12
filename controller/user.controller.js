@@ -1,7 +1,7 @@
 const User = require('../models/user.models');
-// const { redisClient } = require('../server');
+const { redisClient: client } = require('../server');
 const { encodeAccessToken } = require('../utils/helpers');
-const client = require('../utils/redis-client');
+// const client = require('../utils/redis-client');
 
 const getUser = async (req, res) => {
     const emailId = req.query.emailId
