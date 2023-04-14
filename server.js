@@ -71,7 +71,9 @@ mongoose.connect(process.env.MONGODB_URI, (error) => {
 app.delete("/redis-cache/clear-all", async (req, res) => {
     // console.log(await req.oidc.)
     client.flushall((err, result) => {
-        if (err) throw err;
+        if (err) {
+            res.status(400).send(JSON.stringify(err))
+        }
         else {
             console.log(result);
             res.status(200).send(JSON.stringify({
