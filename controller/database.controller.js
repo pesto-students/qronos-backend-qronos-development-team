@@ -14,7 +14,10 @@ const createDatabase = async (req, res) => {
         { $push: { database: database } },
         { new: true }
     )
-
+    redisClient.del(emailId, (err, result) => {
+        if (err) throw err;
+        console.log(result);
+    })
     redisClient.set(emailId, JSON.stringify(databaseEntry), 'EX', 3600)
 
     const encodedDatabase = encodeAccessToken(databaseEntry)
