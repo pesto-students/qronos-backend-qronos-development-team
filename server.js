@@ -68,10 +68,19 @@ mongoose.connect(process.env.MONGODB_URI, (error) => {
 });
 
 
-// app.get("/", async (req, res) => {
-//     // console.log(await req.oidc.)
-//     res.send(req.oidc.isAuthenticated() ? JSON.stringify(req.oidc.user) : 'Logged Out')
-// })
+app.delete("/redis-cache/clear-all", async (req, res) => {
+    // console.log(await req.oidc.)
+    client.flushall((err, result) => {
+        if (err) throw err;
+        else {
+            console.log(result);
+            res.status(200).send(JSON.stringify({
+                result: result,
+                success: "Successful"
+            }))
+        }
+    });
+})
 
 
 routes(app)
