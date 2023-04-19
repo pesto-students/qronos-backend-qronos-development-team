@@ -30,6 +30,10 @@ else
 client.on('error', (error) => console.log(`redis error ${error}`))
 client.connect()
 
+client.on('connect', function () {
+    console.log('Redis Client Connected!');
+})
+
 module.exports.redisClient = client;
 
 
